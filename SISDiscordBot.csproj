@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SlashCommands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AllSlashCommands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DSharpPlus" Version="4.4.0" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.4.0" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.4.0" />
+    <PackageReference Include="DSharpPlus.SlashCommands" Version="4.4.0" />
+    <PackageReference Include="HSNXT.DSharpPlus.Extended" Version="3.0.198" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\net7.0\config.json" />
+  </ItemGroup>
+</Project>
