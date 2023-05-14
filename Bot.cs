@@ -71,6 +71,7 @@ public class Bot
 		_slashCommands = _client.UseSlashCommands();
 		_commands.RegisterCommands<Commands>();
 		_slashCommands.RegisterCommands<SlashCommands>();
+		_slashCommands.RegisterCommands<ModerationCommands>();
 		_commands.CommandErrored += OnCommandError;
 
 		await _client.ConnectAsync();
