@@ -109,7 +109,7 @@ public class ModerationCommands : ApplicationCommandModule
 
 	}
 
-	[SlashCommand("Role", "Create a new role - no permissions by default")]
+	[SlashCommand("add_Role", "Create a new role- no permissions by default")]
 	public async Task CreateRole(InteractionContext ctx, [Option("Name", "What is the name of the role?")] string name, [Option("Color", "What color would you like the tag to be?")] string color)
 	{
 		await ctx.DeferAsync();
@@ -155,7 +155,50 @@ public class ModerationCommands : ApplicationCommandModule
 
 	}
 
-	[SlashCommand("assignment", "assign a role to a user")]
+    [SlashCommand("remove_role", "Remove user role- no permissions by default")]
+    public async Task RemoveRole(InteractionContext ctx, [Option("User", "Whose role is being removed?")] DiscordUser user, [Option("Role", "Designated role to be removed")] DiscordRole intendedRole)
+    {
+        await ctx.DeferAsync();
+
+        if (ctx.Member.Permissions.HasPermission(Permissions.ManageRoles))
+        {
+			DiscordMember member = (DiscordMember)user;
+
+			foreach(var role in member.Roles)
+			{
+				if(role == intendedRole)
+				{
+					await member.RevokeRoleAsync(role);
+
+
+                    var roleRemoved = new DiscordEmbedBuilder()
+                    {
+                        Title = $"Role: {intendedRole} successfully removed",
+                        Color = DiscordColor.DarkButNotBlack
+					};
+
+                    await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(roleRemoved));
+
+                }
+
+            }
+        }
+        else
+        {
+            var errorMessage = new DiscordEmbedBuilder()
+            {
+                Title = "Error",
+                Description = "You do not have the credentials to execute this action",
+                Color = DiscordColor.Red
+            };
+
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(errorMessage));
+        }
+
+
+    }
+
+    [SlashCommand("assignment", "assign a role to a user")]
 
 	public async Task AssignRole(InteractionContext ctx, [Option("User", "What user would you like to assign the role to?")] DiscordUser user, [Option("Role", "What role would you like to assign to the user?")] DiscordRole intendedRole)
 	{
@@ -194,6 +237,8 @@ public class ModerationCommands : ApplicationCommandModule
         }
 
 	}
+
+	
 
 }
 
