@@ -238,7 +238,14 @@ public class ModerationCommands : ApplicationCommandModule
 
 	}
 
-	
+	[SlashCommand("Welcome_board", "Make a poll to allow users to assign themselves roles")]
+	public async Task WelcomeBoard(InteractionContext ctx, [Option("Message", "Provide a short description to welcome others into your discord")] string message)
+	{
+		await ctx.DeferAsync();
+
+		// come finish
+	}
+
 
 }
 

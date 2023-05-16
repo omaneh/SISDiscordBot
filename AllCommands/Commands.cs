@@ -18,5 +18,13 @@ public class Commands : BaseCommandModule
         await ctx.Channel.SendMessageAsync("Hello!");
     }
 
+    [Command("purge")]
+    public async Task PurgeMessages(CommandContext ctx, long count)
+    {
+        IEnumerable<DiscordMessage> messages = await ctx.Channel.GetMessagesAsync((int)count + 1);
+        await ctx.Channel.DeleteMessagesAsync(messages);
+
+    }
+
 }
 
