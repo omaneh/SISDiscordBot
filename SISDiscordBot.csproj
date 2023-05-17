@@ -19,6 +19,7 @@
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.4.0" />
     <PackageReference Include="DSharpPlus.SlashCommands" Version="4.4.0" />
     <PackageReference Include="HSNXT.DSharpPlus.Extended" Version="3.0.198" />
+    <PackageReference Include="DSharpPlus.Lavalink" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\net7.0\config.json" />

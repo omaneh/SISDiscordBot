@@ -10,6 +10,8 @@ using DSharpPlus.EventArgs;
 using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Net;
+using DSharpPlus.Lavalink;
 using DSharpPlus.SlashCommands;
 using SISDiscordBot.AllCommands;
 using SISDiscordBot.AllSlashCommands;
@@ -72,10 +74,28 @@ public class Bot
 		_commands.RegisterCommands<Commands>();
 		_slashCommands.RegisterCommands<SlashCommands>();
 		_slashCommands.RegisterCommands<ModerationCommands>();
+		_slashCommands.RegisterCommands<AudioCommands>();
 		_commands.CommandErrored += OnCommandError;
 
-		await _client.ConnectAsync();
+		// Lavalink config
+		var endpoint = new ConnectionEndpoint
+		{
+			Hostname = "oce-lavalink.lexnet.cc",
+			Port = 443,
+			Secured = true
+        };
 
+		var lavalinkConfig = new LavalinkConfiguration
+		{
+			Password = "lexn3tl@val!nk",
+			RestEndpoint = endpoint,
+			SocketEndpoint = endpoint
+		};
+
+		var lavalink = _client.UseLavalink();
+
+		await _client.ConnectAsync();
+		await lavalink.ConnectAsync(lavalinkConfig);
 		//prevents timing issues and crashing 
 		await Task.Delay(-1);
 

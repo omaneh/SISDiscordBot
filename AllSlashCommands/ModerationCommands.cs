@@ -115,45 +115,50 @@ public class ModerationCommands : ApplicationCommandModule
 	{
 		await ctx.DeferAsync();
 
-		if(ctx.Member.Permissions.HasPermission(Permissions.ManageRoles))
+		try
 		{
-			var chosenColor = color.ToLower() switch
+			if (ctx.Member.Permissions.HasPermission(Permissions.ManageRoles))
 			{
-				"red" => DiscordColor.Red,
-				"yellow" => DiscordColor.Yellow,
-				"blue" => DiscordColor.Blue,
-				"purple" => DiscordColor.Purple,
-				"pink" => DiscordColor.HotPink,
-				"brown" => DiscordColor.Brown,
-				"black" => DiscordColor.Black,
-				"green" => DiscordColor.Green,
-				_ => DiscordColor.Orange
-			};
+				var chosenColor = color.ToLower() switch
+				{
+					"red" => DiscordColor.Red,
+					"yellow" => DiscordColor.Yellow,
+					"blue" => DiscordColor.Blue,
+					"purple" => DiscordColor.Purple,
+					"pink" => DiscordColor.HotPink,
+					"brown" => DiscordColor.Brown,
+					"black" => DiscordColor.Black,
+					"green" => DiscordColor.Green,
+					_ => DiscordColor.Orange
+				};
+                // What I've tried [Exhibit A]
+                var role = await ctx.Guild.CreateRoleAsync(name, Permissions.None, chosenColor);
+				// Associate the emoji with the role
+				await role.ModifyAsync(properties => properties.Emoji = emoji);
 
+				var roleCreatedEmbed = new DiscordEmbedBuilder()
+				{
+					Title = $"Role {name} successfully created",
+					Color = DiscordColor.Blurple
+				};
 
-            var role = await ctx.Guild.CreateRoleAsync(name, Permissions.None, chosenColor);
-            // Associate the emoji with the role
-            await role.ModifyAsync(properties => properties.Emoji = emoji);
-
-            var roleCreatedEmbed = new DiscordEmbedBuilder()
+				await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(roleCreatedEmbed));
+			}
+			else
 			{
-				Title = $"Role {name} successfully created",
-				Color = DiscordColor.Blurple
-			};
+				var errorMessage = new DiscordEmbedBuilder()
+				{
+					Title = "Error",
+					Description = "You do not have the credentials to execute this action",
+					Color = DiscordColor.Red
+				};
 
-			await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(roleCreatedEmbed));
+				await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(errorMessage));
+			}
+		} catch(Exception e)
+		{
+			Console.WriteLine(e);
 		}
-		else
-		{
-            var errorMessage = new DiscordEmbedBuilder()
-            {
-                Title = "Error",
-                Description = "You do not have the credentials to execute this action",
-                Color = DiscordColor.Red
-            };
-
-            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(errorMessage));
-        }
 
 
 	}
